@@ -20,7 +20,14 @@ public class ForumChecker implements Runnable {
 	public void run() {
 		for (int i = 0; i < monitoredForumIds.size(); i++) {
 			Section s = Section.sectionFromFirstPage(monitoredForumIds.get(i));
-			System.out.println(s.getResponse().getForumName() + " - " + s.getNumberOfUnreadThreads() + " unread threads");
+			System.out.println(s.getResponse().getForumName() + " number of unread threads: " + s.getNumberOfUnreadThreads());
+			for (int j = 0; j < s.getResponse().getThreads().size(); j++) {
+				if (!s.getResponse().getThreads().get(j).isRead()) {
+					System.out.println(s.getResponse().getThreads().get(j).getTitle());
+				}
+			}
+			s.subscribeToAllUnreadThreadsAndCatchUp();
+			System.out.println("\n");
 		}
 	}
 }

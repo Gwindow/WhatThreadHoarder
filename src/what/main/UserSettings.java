@@ -13,17 +13,19 @@ public class UserSettings implements Serializable {
 
 	private String username, password;
 	private ArrayList<Integer> monitoredForumIds;
+	private int refreshRate;
 
 	/**
 	 * @param username
 	 * @param password
 	 * @param monitoredForumIds
 	 */
-	public UserSettings(String username, String password, ArrayList<Integer> monitoredForumIds) {
+	public UserSettings(String username, String password, ArrayList<Integer> monitoredForumIds, int refreshRate) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.monitoredForumIds = monitoredForumIds;
+		this.refreshRate = refreshRate;
 	}
 
 	public ArrayList<Integer> getMonitoredForumIds() {
@@ -51,13 +53,13 @@ public class UserSettings implements Serializable {
 	}
 
 	public void saveSettings() throws IOException {
-		FileOutputStream f_out = new FileOutputStream("settings");
+		FileOutputStream f_out = new FileOutputStream("whatthreadhoarder_settings");
 		ObjectOutputStream obj_out = new ObjectOutputStream(f_out);
 		obj_out.writeObject(this);
 	}
 
 	public static UserSettings userSettingsFromSave() throws Exception {
-		FileInputStream f_in = new FileInputStream("settings");
+		FileInputStream f_in = new FileInputStream("whatthreadhoarder_settings");
 		ObjectInputStream obj_in = new ObjectInputStream(f_in);
 		Object obj = obj_in.readObject();
 		if (obj instanceof UserSettings)
@@ -71,5 +73,13 @@ public class UserSettings implements Serializable {
 	@Override
 	public String toString() {
 		return "UserSettings [username=" + username + ", password=" + password + ", monitoredForumIds=" + monitoredForumIds + "]";
+	}
+
+	public int getRefreshRate() {
+		return refreshRate;
+	}
+
+	public void setRefreshRate(int refreshRate) {
+		this.refreshRate = refreshRate;
 	}
 }
