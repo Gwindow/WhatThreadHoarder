@@ -24,7 +24,7 @@ import api.util.CouldNotLoadException;
 public class Main {
 
 	/** The Constant SITE. */
-	private final static String SITE = "http://what.cd/";
+	private final static String SITE = "http://67.183.192.159/";
 
 	/** The executor. */
 	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -105,7 +105,7 @@ public class Main {
 	 * Start forum checker thread.
 	 */
 	private void startForumCheckerThread() {
-		executor.scheduleAtFixedRate(new ForumChecker(), 0, userSettings.getRefreshRate(), TimeUnit.MINUTES);
+		executor.scheduleAtFixedRate(new ForumChecker(), 0, 30, TimeUnit.SECONDS);
 
 	}
 

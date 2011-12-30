@@ -1,6 +1,8 @@
 package what.main;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import api.forum.section.Section;
 
@@ -12,7 +14,7 @@ import api.forum.section.Section;
  * @author Gwindow
  */
 public class ForumChecker implements Runnable {
-
+	private static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
 	/** The monitored forum ids. */
 	private ArrayList<Integer> monitoredForumIds;
 
@@ -28,10 +30,10 @@ public class ForumChecker implements Runnable {
 	 * @see java.lang.Runnable#run() */
 	@Override
 	public void run() {
+		System.out.println(getTime());
 		for (int i = 0; i < monitoredForumIds.size(); i++) {
 			Section s = Section.sectionFromFirstPage(monitoredForumIds.get(i));
 			System.out.println(s.getResponse().getForumName());
-			System.out.println("Number of unread threads: " + s.getNumberOfUnreadThreads() + "\n");
 			for (int j = 0; j < s.getResponse().getThreads().size(); j++) {
 				if (!Settings.getSet().contains(s.getResponse().getThreads().get(j).getTopicId().toString())) {
 					if (!s.getResponse().getThreads().get(j).isRead()) {
@@ -41,7 +43,13 @@ public class ForumChecker implements Runnable {
 					}
 				}
 			}
-			System.out.println("\n");
 		}
+	}
+
+	public String getTime() {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+		return sdf.format(cal.getTime());
+
 	}
 }
