@@ -1,0 +1,17 @@
+WhatThreadHoarder - so you never miss another forum thread again
+
+
+Requirements: 
+
+Java Runtime Environment
+Know how to type into a terminal
+
+
+How to use:
+
+Open a terminal and enter these commands
+cd <directory where you saved the .jar file>
+java -jar WhatThreadHoarder_v0.1.jar
+or if you want to see the help menu
+java -jar WhatThreadHoarder_v0.1.jar -h
+
