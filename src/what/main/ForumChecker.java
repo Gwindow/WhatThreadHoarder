@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import api.forum.section.Section;
+import api.forum.thread.Thread;
 
 /**
  * The Class ForumChecker.
@@ -38,12 +39,14 @@ public class ForumChecker implements Runnable {
 				if (!Settings.getSet().contains(s.getResponse().getThreads().get(j).getTopicId().toString())) {
 					if (!s.getResponse().getThreads().get(j).isRead()) {
 						System.out.println(s.getResponse().getThreads().get(j).getTitle());
-						s.getResponse().getThreads().get(j).subscribe();
+						Thread t = Thread.threadFromFirstPage(s.getResponse().getThreads().get(j).getTopicId().intValue());
+						t.subscribe();
 						Settings.addToSet(s.getResponse().getThreads().get(j).getTopicId().toString());
 					}
 				}
 			}
 		}
+		System.out.println("\nSleeping\n");
 	}
 
 	public String getTime() {

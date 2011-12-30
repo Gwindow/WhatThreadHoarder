@@ -24,13 +24,13 @@ import api.util.CouldNotLoadException;
 public class Main {
 
 	/** The Constant SITE. */
-	private final static String SITE = "http://67.183.192.159/";
+	private final static String SITE = "http://what.cd/";
 
 	/** The executor. */
 	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
 	/** The user settings. */
-	private Settings userSettings = new Settings();
+	private Settings settings = new Settings();
 
 	/** The scanner. */
 	private Scanner scanner = new Scanner(System.in);
@@ -63,7 +63,7 @@ public class Main {
 			}
 			if (args[0].trim().equalsIgnoreCase("-c") || args[0].trim().equalsIgnoreCase("-clear")) {
 				try {
-					userSettings.clearSettings();
+					settings.clearSettings();
 					System.out.println("Settings cleared");
 				} catch (BackingStoreException e) {
 					System.err.println("Could not clear settings");
@@ -72,7 +72,7 @@ public class Main {
 
 			}
 			if (args[0].trim().equalsIgnoreCase("-f") || args[0].trim().equalsIgnoreCase("-flush")) {
-				userSettings.flushSet();
+				settings.flushSet();
 				System.out.println("Thread list flushed");
 				System.exit(0);
 			}
@@ -85,7 +85,7 @@ public class Main {
 				startForumCheckerThread();
 			}
 			if (args[0].trim().equalsIgnoreCase("-s") || args[0].trim().equalsIgnoreCase("-stats")) {
-				if (!userSettings.hasSettings()) {
+				if (!settings.hasSettings()) {
 					login(false);
 				} else {
 					login(true);
@@ -105,7 +105,7 @@ public class Main {
 	 * Start forum checker thread.
 	 */
 	private void startForumCheckerThread() {
-		executor.scheduleAtFixedRate(new ForumChecker(), 0, 30, TimeUnit.SECONDS);
+		executor.scheduleAtFixedRate(new ForumChecker(), 0, settings.getRefreshRate(), TimeUnit.MINUTES);
 
 	}
 
@@ -113,14 +113,14 @@ public class Main {
 	 * Configure settings.
 	 */
 	private void configureSettings() {
-		if (!userSettings.hasSettings()) {
+		if (!settings.hasSettings()) {
 			login(false);
 			chooseForumSections();
 			chooseRefereshRate();
 			saveSettings();
 		} else {
 			try {
-				userSettings = new Settings();
+				settings = new Settings();
 				login(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -139,7 +139,7 @@ public class Main {
 	private void login(boolean auto) {
 		if (auto) {
 			try {
-				MySoup.login("login.php", userSettings.getUsername(), userSettings.getPassword());
+				MySoup.login("login.php", settings.getUsername(), settings.getPassword());
 				System.out.println("Logged in \n");
 			} catch (CouldNotLoadException e) {
 				System.err.println("Could not login");
@@ -197,10 +197,10 @@ public class Main {
 	private void chooseRefereshRate() {
 		while (true) {
 			try {
-				System.out.println("How often should the forums be checked (in minutes)? Minimum is 15 minutes. For example: 30");
+				System.out.println("How often should the forums be checked (in minutes)? Minimum is 30 minutes. For example: 30");
 				refreshRate = scanner.nextInt();
-				if (refreshRate < 15) {
-					System.err.println("Minimum rate is 15 minutes");
+				if (refreshRate < 30) {
+					System.err.println("Minimum rate is 30 minutes");
 				} else {
 					break;
 				}
@@ -216,10 +216,10 @@ public class Main {
 	 */
 	private void saveSettings() {
 		try {
-			userSettings.savePassword(password);
-			userSettings.saveUsername(username);
-			userSettings.saveRefreshRate(refreshRate);
-			userSettings.saveMonitoredForumIds(monitoredForumIds);
+			settings.savePassword(password);
+			settings.saveUsername(username);
+			settings.saveRefreshRate(refreshRate);
+			settings.saveMonitoredForumIds(monitoredForumIds);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Could not save settings");
