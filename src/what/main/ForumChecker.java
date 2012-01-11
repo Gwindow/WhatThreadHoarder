@@ -49,7 +49,7 @@ public class ForumChecker implements Runnable {
 		System.out.println("\nSleeping\n");
 	}
 
-	public String getTime() {
+	private String getTime() {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
 		return sdf.format(cal.getTime());

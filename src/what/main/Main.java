@@ -197,10 +197,10 @@ public class Main {
 	private void chooseRefereshRate() {
 		while (true) {
 			try {
-				System.out.println("How often should the forums be checked (in minutes)? Minimum is 30 minutes. For example: 30");
+				System.out.println("How often should the forums be checked (in minutes)? Minimum is 15 minutes. For example: 30");
 				refreshRate = scanner.nextInt();
-				if (refreshRate < 30) {
-					System.err.println("Minimum rate is 30 minutes");
+				if (refreshRate < 15) {
+					System.err.println("Minimum rate is 15 minutes");
 				} else {
 					break;
 				}
